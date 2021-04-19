@@ -14,8 +14,13 @@ message(STATUS "compiler: " ${CMAKE_CXX_COMPILER_ID})
 
 find_package(Threads REQUIRED)
 
+set (USE_BORINGSSL FALSE)
 {{#platform_deps}}
   hunter_add_package({{pkg_name}} COMPONENTS {{#components}}{{component}} {{/components}})
+
+  if ("{{pkg_name}}" STREQUAL "BoringSSL")
+    set (USE_BORINGSSL TRUE)
+  endif()
 {{/platform_deps}}
 
 # If your cross compile is failing, you should set
@@ -103,6 +108,13 @@ if (WIN32)
         PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/../../third_party/mman-win32>)
 endif (WIN32)
 
+if (USE_BORINGSSL)
+  find_package(BoringSSL)
+  set(OpenSSL_FOUND "${BoringSSL_FOUND}")
+else()
+  find_package(OpenSSL)
+endif()
+
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../../trantor trantor)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC trantor)
@@ -148,6 +160,7 @@ if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD"
         ${CMAKE_CURRENT_LIST_DIR}/../../cmake/tests/ossp_uuid_lib_test.cc
         LINK_LIBRARIES nxxm_libuuid::libuuid)
     if (normal_uuid)
+
         add_definitions(-DUSE_OSSP_UUID=0)
     elseif (ossp_uuid)
         add_definitions(-DUSE_OSSP_UUID=1)
@@ -285,24 +298,17 @@ endif (BUILD_REDIS)
 find_package(ZLIB CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 
-if (MSVC)
-find_package(OpenSSL)
+
 if (OpenSSL_FOUND)
-    target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
-else (OpenSSL_FOUND)
-    set(DROGON_SOURCES ${DROGON_SOURCES} ${CMAKE_CURRENT_LIST_DIR}/../../lib/src/ssl_funcs/Md5.cc
-        ${CMAKE_CURRENT_LIST_DIR}/../../lib/src/ssl_funcs/Sha1.cc)
-endif (OpenSSL_FOUND)
-else ()
-find_package(BoringSSL)
-set(OpenSSL_FOUND "${BoringSSL_FOUND}")
-if (OpenSSL_FOUND)
-    target_link_libraries(${PROJECT_NAME} PRIVATE BoringSSL::ssl BoringSSL::crypto BoringSSL::decrepit)
+    if (USE_BORINGSSL)
+      target_link_libraries(${PROJECT_NAME} PRIVATE BoringSSL::ssl BoringSSL::crypto BoringSSL::decrepit)
+    else()
+      target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+    endif()
     else (OpenSSL_FOUND)
     set(DROGON_SOURCES ${DROGON_SOURCES} ${CMAKE_CURRENT_LIST_DIR}/../../lib/src/ssl_funcs/Md5.cc
         ${CMAKE_CURRENT_LIST_DIR}/../../lib/src/ssl_funcs/Sha1.cc)
 endif (OpenSSL_FOUND)
-endif()
 
 execute_process(COMMAND "git" rev-parse HEAD
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
