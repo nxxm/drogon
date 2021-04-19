@@ -94,7 +94,7 @@ endif(WIN32)
 find_package(BoringSSL)
 set(OpenSSL_FOUND "${BoringSSL_FOUND}")
 if(OpenSSL_FOUND)
-  target_link_libraries(${PROJECT_NAME} PRIVATE BoringSSL::ssl BoringSSL::crypto BoringSSL::decrepit)
+  target_link_libraries(${PROJECT_NAME} INTERFACE BoringSSL::ssl BoringSSL::crypto BoringSSL::decrepit)
   target_compile_definitions(${PROJECT_NAME} PRIVATE USE_OPENSSL)
 endif()
 
