@@ -139,7 +139,7 @@ if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD"
     AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL "OpenBSD"
     AND NOT WIN32)
     find_package(nxxm_libuuid CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE nxxm_libuuid::libuuid)
+    target_link_libraries(${PROJECT_NAME} PRIVATE nxxm_libuuid::uuid)
 
     try_compile(normal_uuid ${CMAKE_BINARY_DIR}/cmaketest
         ${CMAKE_CURRENT_LIST_DIR}/../../cmake/tests/normal_uuid_lib_test.cc

@@ -1,6 +1,6 @@
 {
     "open-source-parsers/jsoncpp" : {}
-  , "lambourl/uuid" : { 
+  , "nxxm/uuid" : { 
       "@:windows-cxx17" : "empty_for_windows",
       "@:windows" : "empty_for_windows",
       "@:vs-15-2017-win64-cxx17" : "empty_for_windows",
