@@ -285,7 +285,6 @@ endif (BUILD_REDIS)
 find_package(ZLIB CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 
-if (MSVC)
 find_package(OpenSSL)
 if (OpenSSL_FOUND)
     target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
@@ -293,16 +292,6 @@ else (OpenSSL_FOUND)
     set(DROGON_SOURCES ${DROGON_SOURCES} ${CMAKE_CURRENT_LIST_DIR}/../../lib/src/ssl_funcs/Md5.cc
         ${CMAKE_CURRENT_LIST_DIR}/../../lib/src/ssl_funcs/Sha1.cc)
 endif (OpenSSL_FOUND)
-else ()
-find_package(BoringSSL)
-set(OpenSSL_FOUND "${BoringSSL_FOUND}")
-if (OpenSSL_FOUND)
-    target_link_libraries(${PROJECT_NAME} PRIVATE BoringSSL::ssl BoringSSL::crypto BoringSSL::decrepit)
-    else (OpenSSL_FOUND)
-    set(DROGON_SOURCES ${DROGON_SOURCES} ${CMAKE_CURRENT_LIST_DIR}/../../lib/src/ssl_funcs/Md5.cc
-        ${CMAKE_CURRENT_LIST_DIR}/../../lib/src/ssl_funcs/Sha1.cc)
-endif (OpenSSL_FOUND)
-endif()
 
 execute_process(COMMAND "git" rev-parse HEAD
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
