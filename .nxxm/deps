@@ -1,5 +1,5 @@
 {
-    "open-source-parsers/jsoncpp" : {"packages": ["jsonccp"], "targets": [""]}
+    "open-source-parsers/jsoncpp" : {}
   , "nxxm/libuuid" : { 
       "@:windows-cxx17" : "empty_for_windows",
       "@:windows" : "empty_for_windows",
