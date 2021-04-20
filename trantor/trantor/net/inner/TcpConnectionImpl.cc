@@ -12,6 +12,14 @@
  *
  */
 
+#if defined(_WIN32) and defined(__MINGW32__) //for use Wincript.h with Boringssl
+# undef X509_NAME
+# undef X509_CERT_PAIR
+# undef X509_EXTENSIONS
+#undef OCSP_REQUEST
+#undef OCSP_RESPONSE
+#endif
+
 #include "TcpConnectionImpl.h"
 #include "Socket.h"
 #include "Channel.h"
