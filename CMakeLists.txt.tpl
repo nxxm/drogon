@@ -143,7 +143,7 @@ endif ()
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/)
 
 # jsoncpp
-find_package(open-source-parsers_jsoncpp REQUIRED)
+find_package(open-source-parsers_jsoncpp CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC open-source-parsers_jsoncpp::jsoncpp)
 list(APPEND INCLUDE_DIRS_FOR_DYNAMIC_VIEW ${JSONCPP_INCLUDE_DIRS})
 
@@ -552,7 +552,6 @@ write_basic_package_version_file(
 install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/nxxm_drogonConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/nxxm_drogonConfigVersion.cmake"
-    "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/FindJsoncpp.cmake"
     "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/FindSQLite3.cmake"
     "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/FindMySQL.cmake"
     "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/Findpg.cmake"
