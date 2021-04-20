@@ -552,7 +552,6 @@ write_basic_package_version_file(
 install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/nxxm_drogonConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/nxxm_drogonConfigVersion.cmake"
-    "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/FindJsoncpp.cmake"
     "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/FindSQLite3.cmake"
     "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/FindMySQL.cmake"
     "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/Findpg.cmake"
