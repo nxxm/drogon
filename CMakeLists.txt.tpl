@@ -144,7 +144,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/)
 
 # jsoncpp
 find_package(open-source-parsers_jsoncpp CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE open-source-parsers_jsoncpp::jsoncpp)
+target_link_libraries(${PROJECT_NAME} PUBLIC open-source-parsers_jsoncpp::jsoncpp)
 list(APPEND INCLUDE_DIRS_FOR_DYNAMIC_VIEW ${JSONCPP_INCLUDE_DIRS})
 
 if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD"
