@@ -21,10 +21,10 @@
 #include <sys/types.h>
 #ifndef _WIN32
 #include <unistd.h>
-#include <wincrypt.h>
 #else
 #include <WinSock2.h>
 #include <Windows.h>
+#include <Wincrypt.h>
 #endif
 #include <sys/stat.h>
 #include <fcntl.h>
