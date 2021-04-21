@@ -24,10 +24,18 @@
 #else
 #include <WinSock2.h>
 #include <Windows.h>
+#include <Wincrypt.h>
 #endif
 #include <sys/stat.h>
 #include <fcntl.h>
 #ifdef USE_OPENSSL
+#if defined(_WIN32) and defined(__MINGW32__) //for use Wincript.h with Boringssl
+# undef X509_NAME
+# undef X509_CERT_PAIR
+# undef X509_EXTENSIONS
+#undef OCSP_REQUEST
+#undef OCSP_RESPONSE
+#endif
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
 #include <openssl/err.h>

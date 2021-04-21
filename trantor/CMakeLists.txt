@@ -90,9 +90,13 @@ if(WIN32)
   set(TRANTOR_SOURCES ${TRANTOR_SOURCES} third_party/wepoll/Wepoll.c)
 endif(WIN32)
 
-find_package(OpenSSL)
+
 if(OpenSSL_FOUND)
-  target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+  if (USE_BORINGSSL)
+    target_link_libraries(${PROJECT_NAME} PRIVATE BoringSSL::ssl BoringSSL::crypto BoringSSL::decrepit)
+  else()
+    target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+  endif()
   target_compile_definitions(${PROJECT_NAME} PRIVATE USE_OPENSSL)
 endif()
 

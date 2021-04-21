@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.18)
 
 ##### PLATFORM deps #####
 set(HUNTER_ROOT "{{HUNTER_ROOT}}")
@@ -14,8 +14,13 @@ message(STATUS "compiler: " ${CMAKE_CXX_COMPILER_ID})
 
 find_package(Threads REQUIRED)
 
+set (USE_BORINGSSL FALSE)
 {{#platform_deps}}
   hunter_add_package({{pkg_name}} COMPONENTS {{#components}}{{component}} {{/components}})
+
+  if ("{{pkg_name}}" STREQUAL "BoringSSL")
+    set (USE_BORINGSSL TRUE)
+  endif()
 {{/platform_deps}}
 
 # If your cross compile is failing, you should set
@@ -103,6 +108,13 @@ if (WIN32)
         PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/../../third_party/mman-win32>)
 endif (WIN32)
 
+if (USE_BORINGSSL)
+  find_package(BoringSSL)
+  set(OpenSSL_FOUND "${BoringSSL_FOUND}")
+else()
+  find_package(OpenSSL)
+endif()
+
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/../../trantor trantor)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC trantor)
@@ -131,7 +143,7 @@ endif ()
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/)
 
 # jsoncpp
-find_package(open-source-parsers_jsoncpp REQUIRED)
+find_package(open-source-parsers_jsoncpp CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PUBLIC open-source-parsers_jsoncpp::jsoncpp)
 list(APPEND INCLUDE_DIRS_FOR_DYNAMIC_VIEW ${JSONCPP_INCLUDE_DIRS})
 
@@ -148,6 +160,7 @@ if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD"
         ${CMAKE_CURRENT_LIST_DIR}/../../cmake/tests/ossp_uuid_lib_test.cc
         LINK_LIBRARIES nxxm_libuuid::libuuid)
     if (normal_uuid)
+
         add_definitions(-DUSE_OSSP_UUID=0)
     elseif (ossp_uuid)
         add_definitions(-DUSE_OSSP_UUID=1)
@@ -285,10 +298,14 @@ endif (BUILD_REDIS)
 find_package(ZLIB CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 
-find_package(OpenSSL)
+
 if (OpenSSL_FOUND)
-    target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
-else (OpenSSL_FOUND)
+    if (USE_BORINGSSL)
+      target_link_libraries(${PROJECT_NAME} PRIVATE BoringSSL::ssl BoringSSL::crypto BoringSSL::decrepit)
+    else()
+      target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+    endif()
+    else (OpenSSL_FOUND)
     set(DROGON_SOURCES ${DROGON_SOURCES} ${CMAKE_CURRENT_LIST_DIR}/../../lib/src/ssl_funcs/Md5.cc
         ${CMAKE_CURRENT_LIST_DIR}/../../lib/src/ssl_funcs/Sha1.cc)
 endif (OpenSSL_FOUND)
@@ -535,8 +552,6 @@ write_basic_package_version_file(
 install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/nxxm_drogonConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/nxxm_drogonConfigVersion.cmake"
-    "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/FindUUID.cmake"
-    "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/FindJsoncpp.cmake"
     "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/FindSQLite3.cmake"
     "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/FindMySQL.cmake"
     "${CMAKE_CURRENT_LIST_DIR}/../../cmake_modules/Findpg.cmake"

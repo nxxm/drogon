@@ -1,2 +1,4 @@
-set("CMAKE_CXX_FLAGS" " ${CMAKE_CXX_FLAGS} -Wno-conversion -Wno-implicit-int-float-conversion ")
-set("CMAKE_C_FLAGS" " ${CMAKE_C_FLAGS} -Wno-conversion -Wno-implicit-int-float-conversion ")
+if (NOT "${POLLY_TOOLCHAIN_TAG}" MATCHES "vs-.*")
+  set("CMAKE_CXX_FLAGS" " ${CMAKE_CXX_FLAGS} -Wno-conversion -Wno-implicit-int-float-conversion ")
+  set("CMAKE_C_FLAGS" " ${CMAKE_C_FLAGS} -Wno-conversion -Wno-implicit-int-float-conversion ")
+endif()

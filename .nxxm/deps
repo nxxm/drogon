@@ -1,10 +1,16 @@
 {
-    "open-source-parsers/jsoncpp" : {}
+    "open-source-parsers/jsoncpp" : { "@" : "master" }
   , "nxxm/libuuid" : { 
       "@:windows-cxx17" : "empty_for_windows",
       "@:windows" : "empty_for_windows",
       "@:vs-15-2017-win64-cxx17" : "empty_for_windows",
       "@:vs-16-2019-win64-cxx17" : "empty_for_windows"
   }
-  , "platform" : [ { "packages": ["ZLIB"] , "targets" : [""] }, { "packages": ["c-ares"], "targets" : [""] }, { "packages": ["uuid"], "targets" : [""] }, "OpenSSL::+SSL", "OpenSSL::+Crypto" ]
+
+  , "platform" : [ { "packages": ["ZLIB"], "targets" : [""] }, { "packages": ["c-ares"], "targets" : [""] }, "OpenSSL::+SSL", "OpenSSL::+Crypto" ]
+  , "platform:vs-15-2017-win64-cxx17" : [ { "packages": ["ZLIB"] , "targets" : [""] }, { "packages": ["c-ares"], "targets" : [""] }, "OpenSSL::+SSL", "OpenSSL::+Crypto", "target::crypt32", "target::ws2_32" ]
+  , "platform:vs-16-2019-win64-cxx17" : [ { "packages": ["ZLIB"] , "targets" : [""] }, { "packages": ["c-ares"], "targets" : [""] }, "OpenSSL::+SSL", "OpenSSL::+Crypto", "target::crypt32", "target::ws2_32" ]
+  , "platform:windows" : [ { "packages": ["ZLIB"] , "targets" : [""] }, { "packages": ["c-ares"], "targets" : [""] }, "BoringSSL::+ssl", "BoringSSL::+crypto", "BoringSSL::+decrepit", "target::crypt32" ]
+  , "platform:windows-cxx17" : [ { "packages": ["ZLIB"] , "targets" : [""] }, { "packages": ["c-ares"], "targets" : [""] }, "BoringSSL::+ssl", "BoringSSL::+crypto", "BoringSSL::+decrepit", "target::crypt32" ]
+
 }
