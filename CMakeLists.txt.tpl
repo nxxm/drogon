@@ -228,7 +228,7 @@ if (BUILD_POSTGRESQL)
         message(STATUS "libpq lib:" ${PG_LIBRARIES})
         target_link_libraries(${PROJECT_NAME} PRIVATE pg_lib)
         set(DROGON_SOURCES ${DROGON_SOURCES}
-            orm_lib/src/postgresql_impl/PostgreSQLResultImpl.cc)
+            ${CMAKE_CURRENT_LIST_DIR}/../../orm_lib/src/postgresql_impl/PostgreSQLResultImpl.cc)
         if (LIBPQ_BATCH_MODE)
             try_compile(libpq_supports_batch ${CMAKE_BINARY_DIR}/cmaketest
                 ${CMAKE_CURRENT_LIST_DIR}/../../cmake/tests/test_libpq_batch_mode.cc
@@ -243,7 +243,7 @@ if (BUILD_POSTGRESQL)
         else (libpq_supports_batch)
             option(LIBPQ_SUPPORTS_BATCH_MODE "libpq batch mode" OFF)
             set(DROGON_SOURCES ${DROGON_SOURCES}
-                orm_lib/src/postgresql_impl/PgConnection.cc)
+                 ${CMAKE_CURRENT_LIST_DIR}/../../orm_lib/src/postgresql_impl/PgConnection.cc)
         endif (libpq_supports_batch)
     endif (pg_FOUND)
 endif (BUILD_POSTGRESQL)
