@@ -6,7 +6,7 @@ jobs:
   build: 
     name: build-linux
     runs-on: ubuntu-latest
-    container: nxxm/nxxm-ubuntu-staging-259
+    container: nxxm/nxxm-ubuntu-staging-277
     env:
       NXXM_AUTH: ${ secrets.NXXM_AUTH }
     steps:
@@ -15,4 +15,4 @@ jobs:
       - name: nxxm builds project 
         run: |
           export HOME=/root
-          nxxm . -t linux --dont-upgrade --verbose --test all 
+          nxxm . -t gcc-7-cxx17 --dont-upgrade --verbose --test all 
