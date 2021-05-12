@@ -14,6 +14,6 @@
   , "platform:windows-cxx17" : [ { "packages": ["ZLIB"] , "targets" : [""] }, { "packages": ["c-ares"], "targets" : [""] }, "BoringSSL::+ssl", "BoringSSL::+crypto", "BoringSSL::+decrepit", "target::crypt32" ]
   , "platform:linux" : [ { "packages": ["ZLIB"] , "targets" : [""] }, { "packages": ["c-ares"], "targets" : [""] }, "BoringSSL::+ssl", "BoringSSL::+crypto", "BoringSSL::+decrepit","PostgreSQL::+libpq"]
   , "platform:linux-cxx17" : [ { "packages": ["ZLIB"] , "targets" : [""] }, { "packages": ["c-ares"], "targets" : [""] }, "BoringSSL::+ssl", "BoringSSL::+crypto", "BoringSSL::+decrepit","PostgreSQL::+libpq"]
-  , "platform:gcc-7-cxx17" : [ { "packages": ["ZLIB"] , "targets" : [""] }, { "packages": ["c-ares"], "targets" : [""] }, "BoringSSL::+ssl", "BoringSSL::+crypto", "BoringSSL::+decrepit","PostgreSQL::+libpq"]
+  , "platform:gcc-7-cxx17" : [ { "packages": ["ZLIB"] , "targets" : [""] }, { "packages": ["c-ares"], "targets" : [""] }, "OpenSSL::+SSL", "OpenSSL::+Crypto","PostgreSQL::+libpq"]
 
 }
